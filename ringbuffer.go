@@ -37,3 +37,14 @@ func (r *RingBuffer) Dump() []interface{} {
 	}
 	return out
 }
+
+// Dump returns the RingBuffer contents from newest to oldest
+func (r *RingBuffer) DumpRev() []interface{} {
+	r.lock.Lock()
+	defer r.lock.Unlock()
+	out := make([]interface{}, 0)
+	for e := r.ring.Front(); e != nil; e = e.Next() {
+		out = append(out, e.Value)
+	}
+	return out
+}
